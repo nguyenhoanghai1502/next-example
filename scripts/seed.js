@@ -61,6 +61,7 @@ async function seedInvoices(client) {
   );
 `;
 
+
     console.log(`Created "invoices" table`);
 
     // Insert data into the "invoices" table
