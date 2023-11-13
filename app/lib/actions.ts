@@ -21,10 +21,7 @@ export async function createInvoice(formData: FormData) {
     });
     const amountInCents = amount * 100;
     const date = new Date().toISOString().split('T')[0];
-    await sql`
-    INSERT INTO invoices (customer_id, amount, status, date)
-    VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
-  `;
+    await sql`CALL SPA_CREATE_INVOICES(${customerId}, ${amountInCents}, ${status}, ${date});`;
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
 }
@@ -39,18 +36,14 @@ export async function updateInvoice(id: string, formData: FormData) {
 
     const amountInCents = amount * 100;
 
-    await sql`
-      UPDATE invoices
-      SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-      WHERE id = ${id}
-    `;
+    await sql`CALL SPA_UPDATE_INVOICES(${customerId}, ${amountInCents}, ${status});`;
 
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
 }
 
 export async function deleteInvoice(id: string) {
-    await sql`DELETE FROM invoices WHERE id = ${id}`;
+    await sql`CALL SPA_DELETE_INVOICES(${id})`;
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
 }
