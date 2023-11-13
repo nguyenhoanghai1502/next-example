@@ -36,7 +36,7 @@ export async function updateInvoice(id: string, formData: FormData) {
 
     const amountInCents = amount * 100;
 
-    await sql`CALL SPA_UPDATE_INVOICES(${customerId}, ${amountInCents}, ${status});`;
+    await sql`CALL SPA_UPDATE_INVOICES(${id},${customerId}, ${amountInCents}, ${status});`;
 
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
