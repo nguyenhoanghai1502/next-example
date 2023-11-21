@@ -1,3 +1,4 @@
+'use server';
 import { sql } from '@vercel/postgres';
 import {
   CustomerField,
@@ -9,6 +10,9 @@ import {
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
+import { api } from './axios';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 
 
@@ -172,16 +176,7 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchCustomers() {
   try {
-    const data = await sql<CustomerField>`
-      SELECT
-        id,
-        name
-      FROM customers
-      ORDER BY name ASC
-    `;
-
-    const customers = data.rows;
-    return customers;
+    const res = await api('users/list-users/', 'GET');
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all customers.');
@@ -228,5 +223,28 @@ export async function getUser(email: string) {
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
+  }
+}
+
+export const handleDivideProfit = async (formData: FormData) => {
+  const profit=formData.get('profit_id')
+  const to_user=formData.get('customerId')
+  const amount_shared=formData.get('amount')
+  console.log(profit, to_user, amount_shared)
+  const res=await api('profits/divide/', 'POST', {profit, to_user, amount_shared})
+  if(res.code===201){
+    revalidatePath(`/dashboard/invoices`);
+    redirect('/dashboard/invoices')
+  }
+}
+
+export const handleCreateProfit = async (formData: FormData) => {
+    
+  const amount=formData.get('amount')
+
+  const res=await api('profits/create/', 'POST', {amount})
+  if(res.code===201){
+    revalidatePath('/dashboard/invoices')
+    redirect('/dashboard/invoices')
   }
 }
