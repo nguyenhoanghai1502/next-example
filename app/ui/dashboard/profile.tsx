@@ -17,6 +17,8 @@ const Profile =async (props: Props) => {
         <div className="font-medium text-black">
             <p>{profile.data?.username}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">Tổng tiền: {profile.data?.total_money}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Lợi nhuận đã chia: {profile.data?.total_divided_profit}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Lợi nhuận còn lại: {profile.data?.total_remaining_profit}</p>
         </div>
     </div>
   )
