@@ -44,7 +44,7 @@ export default async function LatestUsers() {
                     </p>
                     <div className="flex text-black">
                        {invoice.list_users.map((items:any, index:any)=>{
-                        return <img key={index} src={process.env.BASE_URL+items} alt="heheheh" width={15} height={15} className='rounded-full -ml-2'/>
+                        return <img key={index} src={process.env.BASE_URL+items} alt="heheheh" className='rounded-full -ml-2 w-15 h-15'/>
                        })}
                     </div>
                   </div>
