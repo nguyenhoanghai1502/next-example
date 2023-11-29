@@ -20,7 +20,7 @@ export function UpdateInvoice({ id }: { id: string }) {
       href={`/dashboard/invoices/${id}/divide-profit`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
-      <PencilIcon className="w-5" />
+      <PencilIcon className="w-3" />
     </Link>
   );
 }

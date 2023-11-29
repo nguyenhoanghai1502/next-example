@@ -6,6 +6,8 @@ import { fetchFilteredInvoices } from '@/app/lib/data';
 import { api } from '@/app/lib/axios';
 import { format } from 'date-fns';
 import { cookies } from 'next/dist/client/components/headers';
+import { tr } from 'date-fns/locale';
+import Link from 'next/link';
 
 export default async function InvoicesTable({
   query,
@@ -17,59 +19,46 @@ export default async function InvoicesTable({
   // const invoices = await fetchFilteredInvoices(query, currentPage);
   const profit = await api(`profits/list/?date=${query}`, 'GET')
   console.log(profit)
-  const isManager= cookies().get('isManager')
+  const isManager = cookies().get('isManager')
   return (
-    <div className="mt-6 flow-root">
-      <div className="inline-block min-w-full align-middle">
-        <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          <div className="md:hidden">
-            {profit?.data.map((invoice: any) => (
-              <div
-                key={invoice.id}
-                className="mb-2 w-full rounded-md bg-white p-4"
-              >
-                <div className="flex items-center justify-between pb-4">
-                  <div>
-                    <div className=" flex items-center">
+    <div className="relative overflow-x-auto mt-5">
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" className="px-6 py-3">
+              Ngày tạo
+            </th>
+            
+            <th scope="col" className="px-6 py-3">
+              LN đã chia
+            </th>
+            <th scope="col" className="px-6 py-3">
+              LN còn lại
+            </th>
 
-                      <p>{format(new Date(invoice.created_at), 'dd-MM-yyyy')}</p>
-                      
-                    </div>
-                  </div>
-                </div>
+          </tr>
+        </thead>
+        <tbody>
+          {profit.data.map((item:any, index:any) => {
+            return (
+              <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex gap-3 items-center">
+                  {format(new Date(item.created_at), 'dd-MM-yyyy')}
+                  <UpdateInvoice id={item.id} />
+                </th>
                 
-                {isManager?.value==='true'?<div>
-                <div className="w-full bg-gray-200 rounded-full h-1.5 mb-2">
-                  <div
-                    className={"bg-black h-1.5 rounded-full"}
-                    style={{
-                      width:Math.floor((invoice.total_profit / Math.max(invoice.amount, 1)) * 100) + "%"
-                    }}
-                  ></div>
-                  
-                </div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-xs font-medium text-black ">{formatCurrency(invoice.total_profit)}</span>
-                  <span className="text-xs font-medium text-black ">{formatCurrency(invoice.remaining_profit)}</span>
-                </div>
-                </div>:<div>
-                <div className="flex justify-between mb-1">
-                  <span className="text-xl font-medium text-black ">{formatCurrency(invoice.amount)}</span>
-                </div>
-                  </div>}
-
-                {isManager?.value==='true'&&<div className="flex w-full items-center justify-end pt-4 gap-3" >
-
-                  {invoice.remaining_profit>0&&<div className="flex justify-end gap-2">
-                    <UpdateInvoice id={invoice.id} />
-                  </div>}
-                </div>}
-              </div>
-            ))}
-          </div>
-
-        </div>
-      </div>
+                <td className="px-6 py-4">
+                  {formatCurrency(item.total_profit)}
+                </td>
+                <td className="px-6 py-4">
+                  {formatCurrency(item.remaining_profit)}
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     </div>
+
   );
 }

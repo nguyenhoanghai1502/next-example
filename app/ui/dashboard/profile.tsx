@@ -9,6 +9,7 @@ type Props = {}
 
 const Profile =async (props: Props) => {
     const profile= await api('users/profile/', 'GET')
+    console.log(profile)
     if (!profile.data) {
         redirect('/login')
       }
@@ -19,10 +20,10 @@ const Profile =async (props: Props) => {
         <div className="font-medium text-black">
             <p>{profile.data?.username}</p>
             <p className="text-xs text-gray-500 dark:text-gray-400">Tổng tiền: {formatCurrency(profile.data?.total_money)}</p>
-            {isManager?.value=='true'&&<div>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Lợi nhuận đã chia: {formatCurrency(profile.data?.total_divided_profit)}</p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">Lợi nhuận còn lại: {formatCurrency(profile.data?.total_remaining_profit)}</p>
-            </div>}
+            <div>
+              {isManager?.value=='true'&&<p className="text-xs text-gray-500 dark:text-gray-400">Lợi nhuận đã chia: {formatCurrency(profile.data?.total_divided_profit)}</p>}
+            {<p className="text-xs text-gray-500 dark:text-gray-400">{isManager?.value=='true'?'Lợi nhuận còn lại:':'Tổng lợi nhuận'} {formatCurrency(profile.data?.total_remaining_profit)}</p>}
+            </div>
         </div>
     </div>
   )

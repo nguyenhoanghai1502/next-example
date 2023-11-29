@@ -3,117 +3,68 @@ import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import { CustomersTable, FormattedCustomersTable } from '@/app/lib/definitions';
 import { api } from '@/app/lib/axios';
+import { UpdateInvoice } from '../invoices/buttons';
+import { format } from 'date-fns';
+import { formatCurrency } from '@/app/lib/utils';
 
 export default async function ReceiptsTable() {
   const receipts = await api(`receipts/list-receipts/`, 'GET')
-  console.log('~~~~~~~~~~~~~~~~~~~',receipts.data)
+  console.log('~~~~~~~~~~~~~~~~~~~', receipts.data)
   const calPercents = (total: number, remain: number): number => {
     const percent = (remain / total) * 100;
     return parseFloat(percent.toFixed(2));
-};
-const handleCopyText=(text:string| number)=>{
-  navigator.clipboard.writeText(text.toString());
-}
+  };
+
   return (
-    <div className="w-full">
-      <div className="mt-6 flow-root">
-        <div className="overflow-x-auto">
-          <div className="inline-block min-w-full align-middle">
-            <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0">
-              <div className="md:hidden">
-                {receipts.data?.map((receipt:any) => (
-                  <div
-                    key={receipt.id}
-                    className="mb-2 w-full rounded-md bg-white p-4"
-                  >
-                    <div className="flex items-center justify-between border-b pb-4">
-                      <div>
-                        <div className="mb-2 flex items-center">
-                          <div className="flex items-center gap-3">
-                            <Image
-                              src={process.env.BASE_URL+receipt.user_image}
-                              className="rounded-full"
-                              alt={`${receipt.username}'s profile picture`}
-                              width={28}
-                              height={28}
-                            />
-                            <p>{receipt.username}</p>
-                          </div>
-                        </div>
-                        <p className="text-sm text-gray-500">
-                         Tổng tiền: {receipt.user_total_money}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex w-full items-center justify-between border-b py-5">
-                        <p className="text-sm text-gray-500">
-                        <span> Tổng lợi nhuận: {receipt.profit_amount}</span>
-                        <span className='text-xs text-green-500'> +{calPercents(receipt.user_total_money, receipt.profit_amount)}%</span>
-                        </p>
-                      
-                    </div>
-                    <div className="pt-4 text-sm">
-                      <p>{receipt.total_invoices} invoices</p>
+    <div className="relative overflow-x-auto mt-5">
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" className="px-6 py-3">
+              Người dùng
+            </th>
+
+            <th scope="col" className="px-6 py-3">
+              Tổng tiền
+            </th>
+            <th scope="col" className="px-6 py-3">
+              Tổng lợi nhuận
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {receipts.data.map((item: any, index: any) => {
+            return (
+              <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white flex gap-3 items-center">
+                  <div className="mb-2 flex items-center">
+                    <div className="flex items-center gap-3">
+                      <Image
+                        src={process.env.BASE_URL + item.user_image}
+                        className="rounded-full"
+                        alt={`${item.username}'s profile picture`}
+                        width={28}
+                        height={28}
+                      />
+                      <p>{item.username}</p>
                     </div>
                   </div>
-                ))}
-              </div>
-              {/* <table className="hidden min-w-full rounded-md text-gray-900 md:table">
-                <thead className="rounded-md bg-gray-50 text-left text-sm font-normal">
-                  <tr>
-                    <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
-                      Name
-                    </th>
-                    <th scope="col" className="px-3 py-5 font-medium">
-                      Email
-                    </th>
-                    <th scope="col" className="px-3 py-5 font-medium">
-                      Total Invoices
-                    </th>
-                    <th scope="col" className="px-3 py-5 font-medium">
-                      Total Pending
-                    </th>
-                    <th scope="col" className="px-4 py-5 font-medium">
-                      Total Paid
-                    </th>
-                  </tr>
-                </thead>
+                </th>
 
-                <tbody className="divide-y divide-gray-200 text-gray-900">
-                  {customers.map((customer) => (
-                    <tr key={customer.id} className="group">
-                      <td className="whitespace-nowrap bg-white py-5 pl-4 pr-3 text-sm text-black group-first-of-type:rounded-md group-last-of-type:rounded-md sm:pl-6">
-                        <div className="flex items-center gap-3">
-                          <Image
-                            src={customer.image_url}
-                            className="rounded-full"
-                            alt={`${customer.name}'s profile picture`}
-                            width={28}
-                            height={28}
-                          />
-                          <p>{customer.name}</p>
-                        </div>
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.email}
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_invoices}
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm">
-                        {customer.total_pending}
-                      </td>
-                      <td className="whitespace-nowrap bg-white px-4 py-5 text-sm group-first-of-type:rounded-md group-last-of-type:rounded-md">
-                        {customer.total_paid}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table> */}
-            </div>
-          </div>
-        </div>
-      </div>
+                <td className="px-6 py-4">
+                  {formatCurrency(item.user_total_money)}
+                </td>
+                <td className="px-6 py-4">
+                  <p className="text-sm text-gray-500 flex gap-1">
+                    <span>{formatCurrency(item.profit_amount)}</span>
+                    <span className='text-xs text-green-500'> +{calPercents(item.user_total_money, item.profit_amount)}%</span>
+                  </p>
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
