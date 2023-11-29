@@ -4,8 +4,8 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'haideptrai.pythonanywhere.com/',
-            port: '8000',
+            hostname: 'haideptrai.pythonanywhere.com',
+            port: '',
           },
         ],
       },
