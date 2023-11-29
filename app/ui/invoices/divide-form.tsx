@@ -13,9 +13,6 @@ import { Button } from '@/app/ui/button';
 import { createInvoice } from '@/app/lib/actions';
 import { format } from 'date-fns';
 import { formatCurrency } from '@/app/lib/utils';
-import { api } from '@/app/lib/axios';
-import { redirect, useParams } from 'next/navigation';
-import { revalidatePath } from 'next/cache';
 import { handleDivideProfit } from '@/app/lib/data';
 
 export default function Form(
@@ -25,15 +22,7 @@ export default function Form(
     listUsers: any, profit: any, profit_list: any
   }
 ) {
-  const handleOnChange = (id: number) => {
-    const router = useParams();
-    const { profit } = router;
-    
-    console.log(profit)
-    // Replace the dynamic segment in the URL with the new id
-    
-    // Navigate to the updated URL
-  };
+  
   return (
     <form action={handleDivideProfit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
