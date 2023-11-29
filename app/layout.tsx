@@ -10,7 +10,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SessionProvider>
-        <body className={`${inter.className} antialiased`}>{children}</body>
+        <body className={`${inter.className} antialiased bg-white`}>{children}</body>
       </SessionProvider>
     </html>
   );
