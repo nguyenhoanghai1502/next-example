@@ -6,6 +6,7 @@ import { api } from '@/app/lib/axios';
 import { UpdateInvoice } from '../invoices/buttons';
 import { format } from 'date-fns';
 import { formatCurrency } from '@/app/lib/utils';
+import { DoneButton, PendingButton } from '../status-button';
 
 export default async function ReceiptsTable() {
   const receipts = await api(`receipts/list-receipts/`, 'GET')
@@ -30,6 +31,7 @@ export default async function ReceiptsTable() {
             <th scope="col" className="px-6 py-3">
               Tổng lợi nhuận
             </th>
+
           </tr>
         </thead>
         <tbody>
@@ -37,16 +39,19 @@ export default async function ReceiptsTable() {
             return (
               <tr key={index} className="bg-white border-b ">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  flex gap-3 items-center">
-                  <div className="mb-2 flex items-center">
-                    <div className="flex items-center gap-3">
-                      <Image
-                        src={process.env.BASE_URL + item.user_image}
-                        className="rounded-full"
-                        alt={`${item.username}'s profile picture`}
-                        width={28}
-                        height={28}
-                      />
+                  <div className="mb-2 flex items-center gap-3">
+                    <Image
+                      src={process.env.BASE_URL + item.user_image}
+                      className="rounded-full"
+                      alt={`${item.username}'s profile picture`}
+                      width={28}
+                      height={28}
+                    />
+                    <div className="flex flex-col items-center gap-1">
+
                       <p>{item.username}</p>
+                      {item.status === 'pending' ? <PendingButton /> : <DoneButton />}
+
                     </div>
                   </div>
                 </th>

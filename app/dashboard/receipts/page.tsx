@@ -7,7 +7,7 @@ import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { fetchInvoicesPages } from '@/app/lib/data';
 import { api } from '@/app/lib/axios';
 import { cookies } from 'next/dist/client/components/headers';
-import Table from '@/app/ui/customers/table';
+import Table from '@/app/ui/receipts/table';
 export default async function Page({
   searchParams,
 }: {

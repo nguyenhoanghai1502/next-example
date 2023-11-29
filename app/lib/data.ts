@@ -248,3 +248,18 @@ export const handleCreateProfit = async (formData: FormData) => {
     redirect('/dashboard/invoices')
   }
 }
+export const handleCreateUser = async (formData: FormData) => {
+    
+  const username=formData.get('username')
+  const password=formData.get('password')
+  const bank_name=formData.get('bank_name')
+  const bank_id=formData.get('bank_id')
+  const total_money=formData.get('total_money')
+  const manager=formData.get('manager')
+
+  const res=await api('users/create-user/', 'POST', {username, password, bank_id, bank_name, total_money, manager})
+  if(res.code===201){
+    revalidatePath('/dashboard/users')
+    redirect('/dashboard/users')
+  }
+}

@@ -18,12 +18,12 @@ const links = [
     href: '/dashboard/invoices',
     icon: DocumentDuplicateIcon,
   },
-  { name: 'Customers',
-   href: '/dashboard/customers',
+  { name: 'Receipts',
+   href: '/dashboard/receipts',
     icon: ReceiptRefundIcon 
   },
-  { name: 'Customers',
-   href: '/dashboard/customers',
+  { name: 'Users',
+   href: '/dashboard/users',
     icon: UserGroupIcon 
   },
 ];
