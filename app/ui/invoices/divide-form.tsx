@@ -14,7 +14,7 @@ import { createInvoice } from '@/app/lib/actions';
 import { format } from 'date-fns';
 import { formatCurrency } from '@/app/lib/utils';
 import { api } from '@/app/lib/axios';
-import { redirect } from 'next/navigation';
+import { redirect, useParams } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { handleDivideProfit } from '@/app/lib/data';
 
@@ -25,7 +25,15 @@ export default function Form(
     listUsers: any, profit: any, profit_list: any
   }
 ) {
-
+  const handleOnChange = (id: number) => {
+    const router = useParams();
+    const { profit } = router;
+    
+    console.log(profit)
+    // Replace the dynamic segment in the URL with the new id
+    
+    // Navigate to the updated URL
+  };
   return (
     <form action={handleDivideProfit}>
       <div className="rounded-md bg-gray-50 p-4 md:p-6">
@@ -53,7 +61,7 @@ export default function Form(
             <UserCircleIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
         </div>
-        <div className="mb-4">
+        <div className="mb-4 hidden">
           <label htmlFor="profit" className="mb-2 block text-sm font-medium">
             Chọn lợi nhuận
           </label>

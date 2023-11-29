@@ -2,26 +2,28 @@ import Image from 'next/image';
 import { lusitana } from '@/app/ui/fonts';
 import Search from '@/app/ui/search';
 import { CustomersTable, FormattedCustomersTable } from '@/app/lib/definitions';
+import { api } from '@/app/lib/axios';
 
-export default async function CustomersTable({
-  customers,
-}: {
-  customers: FormattedCustomersTable[];
-}) {
+export default async function ReceiptsTable() {
+  const receipts = await api(`receipts/list-receipts/`, 'GET')
+  console.log('~~~~~~~~~~~~~~~~~~~',receipts.data)
+  const calPercents = (total: number, remain: number): number => {
+    const percent = (remain / total) * 100;
+    return parseFloat(percent.toFixed(2));
+};
+const handleCopyText=(text:string| number)=>{
+  navigator.clipboard.writeText(text.toString());
+}
   return (
     <div className="w-full">
-      <h1 className={`${lusitana.className} mb-8 text-xl md:text-2xl`}>
-        Customers
-      </h1>
-      <Search placeholder="Search customers..." />
       <div className="mt-6 flow-root">
         <div className="overflow-x-auto">
           <div className="inline-block min-w-full align-middle">
             <div className="overflow-hidden rounded-md bg-gray-50 p-2 md:pt-0">
               <div className="md:hidden">
-                {customers?.map((customer) => (
+                {receipts.data?.map((receipt:any) => (
                   <div
-                    key={customer.id}
+                    key={receipt.id}
                     className="mb-2 w-full rounded-md bg-white p-4"
                   >
                     <div className="flex items-center justify-between border-b pb-4">
@@ -29,37 +31,34 @@ export default async function CustomersTable({
                         <div className="mb-2 flex items-center">
                           <div className="flex items-center gap-3">
                             <Image
-                              src={customer.image_url}
+                              src={process.env.BASE_URL+receipt.user_image}
                               className="rounded-full"
-                              alt={`${customer.name}'s profile picture`}
+                              alt={`${receipt.username}'s profile picture`}
                               width={28}
                               height={28}
                             />
-                            <p>{customer.name}</p>
+                            <p>{receipt.username}</p>
                           </div>
                         </div>
                         <p className="text-sm text-gray-500">
-                          {customer.email}
+                         Tổng tiền: {receipt.user_total_money}
                         </p>
                       </div>
                     </div>
                     <div className="flex w-full items-center justify-between border-b py-5">
-                      <div className="flex w-1/2 flex-col">
-                        <p className="text-xs">Pending</p>
-                        <p className="font-medium">{customer.total_pending}</p>
-                      </div>
-                      <div className="flex w-1/2 flex-col">
-                        <p className="text-xs">Paid</p>
-                        <p className="font-medium">{customer.total_paid}</p>
-                      </div>
+                        <p className="text-sm text-gray-500">
+                        <span> Tổng lợi nhuận: {receipt.profit_amount}</span>
+                        <span className='text-xs text-green-500'> +{calPercents(receipt.user_total_money, receipt.profit_amount)}%</span>
+                        </p>
+                      
                     </div>
                     <div className="pt-4 text-sm">
-                      <p>{customer.total_invoices} invoices</p>
+                      <p>{receipt.total_invoices} invoices</p>
                     </div>
                   </div>
                 ))}
               </div>
-              <table className="hidden min-w-full rounded-md text-gray-900 md:table">
+              {/* <table className="hidden min-w-full rounded-md text-gray-900 md:table">
                 <thead className="rounded-md bg-gray-50 text-left text-sm font-normal">
                   <tr>
                     <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
@@ -110,7 +109,7 @@ export default async function CustomersTable({
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </table> */}
             </div>
           </div>
         </div>
