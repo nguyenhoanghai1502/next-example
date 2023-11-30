@@ -263,3 +263,19 @@ export const handleCreateUser = async (formData: FormData) => {
     redirect('/dashboard/users')
   }
 }
+export const handleUpdateUser=async (id:number|string, formData:FormData)=>{
+  console.log(id, formData)
+  const username=formData.get('username')
+  const password=formData.get('password')
+  const bank_name=formData.get('bank_name')
+  const bank_id=formData.get('bank_id')
+  const total_money=formData.get('total_money')
+  const manager=formData.get('manager')
+
+  const res=await api(`users/update-user/${id}/`, 'PUT', {username, password, bank_id, bank_name, total_money, manager})
+  if(res.code===200){
+    revalidatePath('/dashboard/users')
+    redirect('/dashboard/users')
+  }
+  console.log(res)
+}

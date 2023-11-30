@@ -1,13 +1,14 @@
-import Form from '@/app/ui/invoices/divide-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { api } from '@/app/lib/axios';
+import Form from '@/app/ui/users/edit-form';
  
 export default async function Page({ params }: { params: { id: string } }) {
     const id = params.id;
     const [listUsers, user] = await Promise.all([
         api('users/list-users/'),
-        api(`users/detail/${id}`, 'GET', null, {id:id}),
+        api(`users/get-user/${id}/`, 'GET', null, {id:id}),
     ]);
+    console.log(listUsers.data, user)
   return (
     <main>
       <Breadcrumbs
@@ -20,7 +21,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           },
         ]}
       />
-      {/* <Form listUsers={listUsers.data} /> */}
+      <Form id={id} listUsers={listUsers.data} user={user.data} />
     </main>
   );
 }

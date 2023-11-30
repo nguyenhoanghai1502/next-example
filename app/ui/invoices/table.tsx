@@ -8,16 +8,19 @@ import { format } from 'date-fns';
 import { cookies } from 'next/dist/client/components/headers';
 import { tr } from 'date-fns/locale';
 import Link from 'next/link';
+import Pagination from './pagination';
 
 export default async function InvoicesTable({
-  query,
+  month,
+  year,
   currentPage,
 }: {
-  query: string;
+  month: string;
+  year: string;
   currentPage: number;
 }) {
   // const invoices = await fetchFilteredInvoices(query, currentPage);
-  const profit = await api(`profits/list/?date=${query}`, 'GET')
+  const profit = await api(`profits/list/?month=${month}&year=${year}&page=${currentPage}`, 'GET')
   console.log(profit)
   const isManager = cookies().get('isManager')
   return (
@@ -39,7 +42,7 @@ export default async function InvoicesTable({
           </tr>
         </thead>
         <tbody>
-          {profit.data.map((item:any, index:any) => {
+          {profit.data.data.map((item:any, index:any) => {
             return (
               <tr key={index} className="bg-white border-b">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap flex gap-3 items-center">
@@ -58,6 +61,9 @@ export default async function InvoicesTable({
           })}
         </tbody>
       </table>
+      <div className="mt-5 flex w-full justify-center">
+        <Pagination totalPages={profit.data.pages} />
+      </div>
     </div>
 
   );

@@ -29,11 +29,9 @@ export default async function Page({
         {role?.value==='true'&&<CreateUsers />}
       </div>
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-        <Table />
+        <Table username={query} currentPage={currentPage}/>
       </Suspense>
-      <div className="mt-5 flex w-full justify-center">
-        <Pagination totalPages={0} />
-      </div>
+      
     </div>
   );
 }

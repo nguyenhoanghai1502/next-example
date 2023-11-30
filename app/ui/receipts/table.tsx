@@ -7,9 +7,18 @@ import { UpdateInvoice } from '../invoices/buttons';
 import { format } from 'date-fns';
 import { formatCurrency } from '@/app/lib/utils';
 import { DoneButton, PendingButton } from '../status-button';
+import Pagination from '../invoices/pagination';
 
-export default async function ReceiptsTable() {
-  const receipts = await api(`receipts/list-receipts/`, 'GET')
+export default async function ReceiptsTable({
+  month,
+  year,
+  currentPage,
+}: {
+  month: string;
+  year: string;
+  currentPage: number;
+}) {
+  const receipts = await api(`receipts/list-receipts/?month=${month}&year=${year}&page=${currentPage}`, 'GET')
   console.log('~~~~~~~~~~~~~~~~~~~', receipts.data)
   const calPercents = (total: number, remain: number): number => {
     const percent = (remain / total) * 100;
@@ -35,7 +44,7 @@ export default async function ReceiptsTable() {
           </tr>
         </thead>
         <tbody>
-          {receipts.data.map((item: any, index: any) => {
+          {receipts.data.data.map((item: any, index: any) => {
             return (
               <tr key={index} className="bg-white border-b ">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap  flex gap-3 items-center">
@@ -70,6 +79,9 @@ export default async function ReceiptsTable() {
           })}
         </tbody>
       </table>
+      <div className="mt-5 flex w-full justify-center">
+        <Pagination totalPages={receipts.data.pages} />
+      </div>
     </div>
   );
 }
