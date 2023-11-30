@@ -32,7 +32,6 @@ export default async function Page({
       <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
         {/* <Search placeholder="Tìm kiếm..." /> */}
         <DatePickerInput/>
-        {role?.value==='true'&&<CreateInvoice />}
       </div>
       <Suspense key={month+year + currentPage} fallback={<InvoicesTableSkeleton />}>
         <Table month={month} year={year} currentPage={currentPage} />

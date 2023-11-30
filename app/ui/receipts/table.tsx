@@ -19,7 +19,6 @@ export default async function ReceiptsTable({
   currentPage: number;
 }) {
   const receipts = await api(`receipts/list-receipts/?month=${month}&year=${year}&page=${currentPage}`, 'GET')
-  console.log('~~~~~~~~~~~~~~~~~~~', receipts.data)
   const calPercents = (total: number, remain: number): number => {
     const percent = (remain / total) * 100;
     return parseFloat(percent.toFixed(2));
