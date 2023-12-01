@@ -22,7 +22,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           },
         ]}
       />
-      <Form listUsers={listUsers.data} profit={profit.data[0]} profit_list={profit_list.data}/>
+      <Form listUsers={listUsers.data.data} profit={profit.data[0]} profit_list={profit_list.data.data}/>
     </main>
   );
 }

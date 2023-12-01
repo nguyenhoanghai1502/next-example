@@ -8,6 +8,8 @@ import { format } from 'date-fns';
 import { formatCurrency } from '@/app/lib/utils';
 import { DoneButton, PendingButton } from '../status-button';
 import Pagination from '../invoices/pagination';
+import { cookies } from 'next/dist/client/components/headers';
+import { UpdateReceipt } from './buttons';
 
 export default async function ReceiptsTable({
   month,
@@ -19,10 +21,13 @@ export default async function ReceiptsTable({
   currentPage: number;
 }) {
   const receipts = await api(`receipts/list-receipts/?month=${month}&year=${year}&page=${currentPage}`, 'GET')
+  console.log(receipts.data.data)
   const calPercents = (total: number, remain: number): number => {
     const percent = (remain / total) * 100;
     return parseFloat(percent.toFixed(2));
   };
+  const isAdmin = cookies().get('isAdmin')
+  const isManager = cookies().get('isManager')
 
   return (
     <div className="relative overflow-x-auto mt-5">
@@ -59,8 +64,9 @@ export default async function ReceiptsTable({
 
                       <p>{item.username}</p>
                       {item.status === 'pending' ? <PendingButton /> : <DoneButton />}
-
                     </div>
+                    {(isAdmin?.value === 'true'||isManager?.value==='true') && <UpdateReceipt id={item.id} />}
+
                   </div>
                 </th>
 

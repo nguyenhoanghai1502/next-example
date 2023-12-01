@@ -10,7 +10,7 @@ import {
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
-import { api } from './axios';
+import { api, apiMedia } from './axios';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
@@ -278,4 +278,16 @@ export const handleUpdateUser=async (id:number|string, formData:FormData)=>{
     redirect('/dashboard/users')
   }
   console.log(res)
+}
+
+export const handleUpdateReceipt=async (id:number|string, formData:FormData)=>{
+  console.log(formData)
+
+  const res=await apiMedia(`receipts/update-receipt/${id}/`, 'PUT', formData)
+
+  if(res.code===200){
+    revalidatePath('/dashboard/receipts')
+    redirect('/dashboard/receipts')
+  }
+  
 }
