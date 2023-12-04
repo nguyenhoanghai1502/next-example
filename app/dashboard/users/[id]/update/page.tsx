@@ -21,7 +21,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           },
         ]}
       />
-      <Form id={id} listUsers={listUsers.data} user={user.data} />
+      <Form id={id} listUsers={listUsers.data.data} user={user.data} />
     </main>
   );
 }
