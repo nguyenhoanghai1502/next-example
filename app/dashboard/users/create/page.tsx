@@ -19,7 +19,7 @@ export default async function Page() {
           },
         ]}
       />
-      <Form listUsers={listUsers.data}/>
+      <Form listUsers={listUsers.data.data}/>
     </main>
   );
 }

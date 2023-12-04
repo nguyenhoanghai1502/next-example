@@ -3,6 +3,7 @@
 import { cookies } from 'next/dist/client/components/headers';
 import axios from 'axios';
 import { config } from 'process';
+import { redirect } from 'next/navigation';
 
 export const api = async (url:string, method:string = 'GET', data?:any , params?:any) => {
   const access_token = cookies().get('access_token');
@@ -20,11 +21,12 @@ export const api = async (url:string, method:string = 'GET', data?:any , params?
       
     });
     if (res.status === 401) {
-      return {
-        code: res.status,
-        data: null,
-        message: 'Phiên đăng nhập đã hết! Vui lòng đăng nhập lại!',
-      };
+      redirect('/login')
+      // return {
+      //   code: res.status,
+      //   data: null,
+      //   message: 'Phiên đăng nhập đã hết! Vui lòng đăng nhập lại!',
+      // };
     }
 
     if (res.status === 400) {
